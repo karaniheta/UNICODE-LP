@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:task1/authservice.dart';
+import 'package:task1/home.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -8,6 +10,16 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  final _auth = AuthService();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  @override
+  void dispose() {
+    super.dispose();
+    _email.dispose();
+    _password.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +52,13 @@ class _MyLoginState extends State<MyLogin> {
             child: Column(
               children: [
                 TextField(
-                  decoration: InputDecoration(
-                      fillColor: Colors.grey.shade100,
-                      filled: true,
-                      hintText: 'Email',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                ),
+                    decoration: InputDecoration(
+                        fillColor: Colors.grey.shade100,
+                        filled: true,
+                        hintText: 'Email',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    controller: _email),
                 SizedBox(
                   height: 20,
                 ),
@@ -58,6 +70,7 @@ class _MyLoginState extends State<MyLogin> {
                       hintText: 'Password',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10))),
+                  controller: _password,
                 ),
                 SizedBox(
                   height: 20,
@@ -65,22 +78,16 @@ class _MyLoginState extends State<MyLogin> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'SignIn',
-                      style: TextStyle(
-                          color: Color(0xff4c505b),
-                          fontSize: 27,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff4c505b),
-                      child: IconButton(
-                        color: Colors.white,
-                        onPressed: () {},
-                        icon: Icon(Icons.arrow_forward),
-                      ),
-                    )
+                    TextButton(
+                        onPressed: _signin,
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 18,
+                            color: Color(0xff4c505b),
+                          ),
+                        )),
                   ],
                 ),
                 SizedBox(
@@ -119,5 +126,16 @@ class _MyLoginState extends State<MyLogin> {
         ],
       ),
     ));
+  }
+
+  void _signin() async {
+    final user =
+        await _auth.loginUserWithEmailAndPassword(_email.text, _password.text);
+    if (user != null) {
+      print("User Created Succesfully");
+
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => HomePage()));
+    }
   }
 }

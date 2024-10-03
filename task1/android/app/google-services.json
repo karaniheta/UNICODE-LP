@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "969179330277",
+    "project_id": "task1-3a594",
+    "storage_bucket": "task1-3a594.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969179330277:android:02a17c41fd8307556ac60c",
+        "android_client_info": {
+          "package_name": "com.example.task1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqF0aMyq2Ue5bYLhv6DYJ4woieMTGszR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969179330277:android:c42a7268ed42fa076ac60c",
+        "android_client_info": {
+          "package_name": "com.heta.task1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqF0aMyq2Ue5bYLhv6DYJ4woieMTGszR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
