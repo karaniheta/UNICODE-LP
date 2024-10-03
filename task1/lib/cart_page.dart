@@ -19,7 +19,7 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Coffee>(
+    return Consumer<CoffeeShop>(
         builder: (context, value, child) => SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
@@ -35,18 +35,18 @@ class _CartPageState extends State<CartPage> {
 
                     Expanded(
                       child: ListView.builder(
-                        itemCount: value.userCart.length,
-                        itemBuilder: (context, index) {
-                        //get individualcoffee
-                        Coffee eachCoffee = value.userCart[index];
+                          itemCount: value.userCart.length,
+                          itemBuilder: (context, index) {
+                            //get individualcoffee
+                            Coffee eachCoffee = value.userCart[index];
 
-                        //return coffee tile
+                            //return coffee tile
 
-                        return CoffeeTile(
-                            coffee: eachCoffee,
-                            onPressed: ()=>  removeFromCart(eachCoffee),
-                            icon: Icon(Icons.delete));
-                      }),
+                            return CoffeeTile(
+                                coffee: eachCoffee,
+                                onPressed: () => removeFromCart(eachCoffee),
+                                icon: Icon(Icons.delete));
+                          }),
                     )
                   ],
                 ),

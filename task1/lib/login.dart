@@ -81,7 +81,7 @@ class _MyLoginState extends State<MyLogin> {
                     TextButton(
                         onPressed: _signin,
                         child: Text(
-                          'Sign Up',
+                          'Sign In',
                           style: TextStyle(
                             decoration: TextDecoration.underline,
                             fontSize: 18,
@@ -134,8 +134,8 @@ class _MyLoginState extends State<MyLogin> {
     if (user != null) {
       print("User Created Succesfully");
 
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 }
