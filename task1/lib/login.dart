@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
+
+import 'package:task1/SplashScreen.dart';
 import 'package:task1/authservice.dart';
-import 'package:task1/home.dart';
+import 'package:task1/homepage.dart';
+import 'package:task1/signup.dart';
 
-class MyLogin extends StatefulWidget {
-  const MyLogin({super.key});
-
+class MyLoginPage extends StatefulWidget {
+  const MyLoginPage({super.key});
   @override
-  State<MyLogin> createState() => _MyLoginState();
+  State<MyLoginPage> createState() => _MyLoginState();
 }
 
-class _MyLoginState extends State<MyLogin> {
+class _MyLoginState extends State<MyLoginPage> {
   final _auth = AuthService();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -22,108 +25,118 @@ class _MyLoginState extends State<MyLogin> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      width: double.infinity,
-      height: 900,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/login.jpg'),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.only(left: 35, top: 130),
-            child: Text(
-              '\nWelcome',
-              style: TextStyle(
-                  color: Color.fromARGB(220, 0, 0, 0),
-                  fontSize: 45,
-                  fontWeight: FontWeight.w400),
-            ),
+    return SafeArea(
+        child: Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: 900,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/login.jpg'),
+            fit: BoxFit.fill,
           ),
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.55,
-                right: 35,
-                left: 35), //0.5 to appear it on half of screen
+        ),
+        child: Center(
+          child: Container(
+            width: 350,
+            height: 300,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white, width: 1.5),
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Column(
               children: [
-                TextField(
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey.shade100,
-                        filled: true,
-                        hintText: 'Email',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    controller: _email),
-                SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      fillColor: Colors.grey.shade100,
-                      filled: true,
-                      hintText: 'Password',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  controller: _password,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                        onPressed: _signin,
-                        child: Text(
-                          'Sign In',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 18,
-                            color: Color(0xff4c505b),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white,
+                            thickness: 2.0,
                           ),
-                        )),
-                  ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            "Sign In",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white,
+                            thickness: 2.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // add remainong code
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
+                Container(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.005,
+                      right: 25,
+                      left: 25),
+                  child: Column(
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                            hintText: 'Email',
+                            hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.white,
+                                    style: BorderStyle.solid,
+                                    width: 10))),
+                        controller: _email,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              hintText: 'Password',
+                              hintStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white,
+                                      style: BorderStyle.solid,
+                                      width: 10))),
+                          controller: _password),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      ElevatedButton(
+                        onPressed: _signin,
+                        child: Text("SignIn"),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 10),
+                          textStyle: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, 'register');
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MySignUp()));
                         },
                         child: Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 18,
-                            color: Color(0xff4c505b),
-                          ),
-                        )),
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Forgot Password',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 18,
-                            color: Color(0xff4c505b),
-                          ),
-                        )),
-                  ],
+                          "Don't have an account? SignUp",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
           ),
-        ],
+        ),
       ),
     ));
   }
@@ -135,7 +148,7 @@ class _MyLoginState extends State<MyLogin> {
       print("User Created Succesfully");
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomePage()));
+          .push(MaterialPageRoute(builder: (context) => MyHomePage()));
     }
   }
 }
