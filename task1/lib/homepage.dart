@@ -1,10 +1,35 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'package:task1/Models/posts_model.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController searchController = TextEditingController();
+
+  List<PostsModel> postList = [];
+
+  Future<List<PostsModel>> getPostApi() async {
+    final response = await http.get(
+        Uri.parse('https://unicode-flutter-lp.onrender.com/get_all_products'));
+    var data = jsonDecode(response.body.toString());
+    if (response.statusCode == 200) {
+      for (var i in data) {
+        postList.add(PostsModel.fromJson(i));
+      }
+      return postList;
+    } else {
+      return postList;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

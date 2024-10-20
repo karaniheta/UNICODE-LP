@@ -17,7 +17,7 @@ class _SplashscreenState extends State<Splashscreen> {
 
   _navigatetohome() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => MyLoginPage()));
   }
 
