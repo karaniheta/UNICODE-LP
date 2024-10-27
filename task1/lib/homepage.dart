@@ -22,17 +22,18 @@ class _MyHomePageState extends State<MyHomePage> {
         Uri.parse('https://unicode-flutter-lp.onrender.com/get_all_products'));
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
+      print(data);
       for (var i in data) {
         postList.add(PostsModel.fromJson(i));
         print("object");
       }
+      print(postList[1].category);
+      setState(() {});
       return postList;
-      print(postList);
     } else {
       print('ahmvhgdcfhgjgmnb');
       return postList;
     }
-    print(postList);
   }
 
   @override
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (!snapshot.hasData) {
                 return Text('loading...');
               } else {
-                return Stack(
+                return Column(
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -66,10 +67,15 @@ class _MyHomePageState extends State<MyHomePage> {
                               Padding(
                                 padding: const EdgeInsets.only(
                                     top: 30, left: 30, bottom: 30),
-                                child: CircleAvatar(
-                                  radius: 70,
-                                  backgroundImage:
-                                      AssetImage('assets/profilepic.png'),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {});
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 70,
+                                    backgroundImage:
+                                        AssetImage('assets/profilepic.png'),
+                                  ),
                                 ),
                               ),
                               Text('     abvn'),
@@ -100,70 +106,77 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                  ],
-                );
-                ListView.builder(
-                  itemCount: postList.length,
-                  itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 30),
-                          child: Container(
-                            height: 150,
-                            width: 350,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 30),
-                          child: ClipPath(
-                            clipper: MyClipper(),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              height: 150,
-                              width: 350,
-                              decoration: BoxDecoration(
-                                color: Color(0x86997E6B),
-                                borderRadius: BorderRadius.circular(20),
+                    SizedBox(
+                      height: 500,
+                      child: ListView.builder(
+                        itemCount: postList.length,
+                        itemBuilder: (context, index) {
+                          return Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 30),
+                                child: Container(
+                                  height: 150,
+                                  width: 350,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10, left: 200),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(150),
-                                border: Border.all(
-                                  color: Colors.black,
-                                )),
-                            child: CircleAvatar(
-                              radius: 100,
-                                backgroundImage:
-                                  NetworkImage(postList[index].image.toString()),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40.0, left: 20),
-                          child: Text(
-                            'Cappichino',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  },
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 30),
+                                child: ClipPath(
+                                  clipper: MyClipper(),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    height: 150,
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                      color: Color(0x86997E6B),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 40.0, left: 20),
+                                child: Expanded(
+                                  child: Text(
+                                    postList[index].name.toString(),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, left: 200),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(150),
+                                      border: Border.all(
+                                        color: Colors.black,
+                                      )),
+                                  child: CircleAvatar(
+                                    radius: 100,
+                                    backgroundImage: NetworkImage(
+                                        postList[index].image.toString()),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 );
               }
             },
