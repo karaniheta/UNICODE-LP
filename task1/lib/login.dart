@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:task1/SplashScreen.dart';
 import 'package:task1/authservice.dart';
+import 'package:task1/bottomnavbar.dart';
 import 'package:task1/homepage.dart';
 import 'package:task1/signup.dart';
 
@@ -148,7 +149,7 @@ class _MyLoginState extends State<MyLoginPage> {
       print("User Created Succesfully");
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => MyHomePage()));
+          .push(MaterialPageRoute(builder: (context) => Bottomnavbar()));
     }
   }
 }

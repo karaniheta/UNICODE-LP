@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:task1/Models/posts_model.dart';
+import 'package:task1/drinkmenu.dart';
+import 'package:task1/drinkmenu.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
@@ -22,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Uri.parse('https://unicode-flutter-lp.onrender.com/get_all_products'));
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      print(data);
+      //print(data);
       for (var i in data) {
         postList.add(PostsModel.fromJson(i));
         print("object");
@@ -40,149 +43,123 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFFF8E3B6),
+        title: Text(
+          "Good Day,Heta",
+          style: TextStyle(color: Color(0xFF834D1E), fontSize: 22),
+        ),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.menu))
+        ],
+      ),
       body: Column(
         children: [
-          FutureBuilder(
-            future: getPostApi(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Text('loading...');
-              } else {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
+          Column(
+            children: [
+              Container(
+                  width: double.infinity,
+                  height: 690,
+                  decoration: BoxDecoration(color: Color(0xFFF8E3B6)),
                   child: Column(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 300,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF3C2B2B),
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(50),
-                              bottomRight: Radius.circular(
-                                  50)), // Radius for rounded edges
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 40, left: 20, right: 20),
+                        child: Container(
+                          height: 170,
+                          width: 350,
+                          decoration: BoxDecoration(
+                              color: Color(0xFF834D1E),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 220),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage('assets/image1.png'))),
+                            ),
+                          ),
                         ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                        width: 350,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 130),
+                        child: Text("This week's recommendations"),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 10),
                         child: Column(
                           children: [
                             Row(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 30, left: 30, bottom: 30),
-                                  child: InkWell(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 70,
-                                      backgroundImage:
-                                          AssetImage('assets/profilepic.png'),
-                                    ),
-                                  ),
+                                Container(
+                                  height: 200,
+                                  width: 170,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/image2.png'),
+                                          fit: BoxFit.cover)),
                                 ),
-                                Text('     abvn'),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  height: 200,
+                                  width: 170,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/image3.png'),
+                                          fit: BoxFit.cover)),
+                                )
                               ],
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              child: SearchBar(
-                                controller: searchController,
-                                leading: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.search)),
-
-                                trailing: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.mic),
-                                  ),
-                                ],
-
-                                //padding: const EdgeInsets.only(right: 10,left: 10) ,
-                                backgroundColor:
-                                    WidgetStateProperty.all(Colors.white),
-                                hintText: 'Search...',
-                                // icon: Icon(Icons.search),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 500,
-                        child: ListView.builder(
-                          itemCount: postList.length,
-                          itemBuilder: (context, index) {
-                            return Stack(
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 30),
-                                  child: Container(
-                                    height: 150,
-                                    width: 350,
-                                    decoration: BoxDecoration(
+                                Container(
+                                  height: 200,
+                                  width: 170,
+                                  decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/image1.png'),
+                                          fit: BoxFit.cover)),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 30),
-                                  child: ClipPath(
-                                    clipper: MyClipper(),
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 10),
-                                      height: 150,
-                                      width: 350,
-                                      decoration: BoxDecoration(
-                                        color: Color(0x86997E6B),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                  ),
+                                SizedBox(
+                                  width: 20,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 40.0, left: 20),
-                                  child: Text(
-                                    postList[index].name.toString(),
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 10, left: 200),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(150),
-                                        border: Border.all(
-                                          color: Colors.black,
-                                        )),
-                                    child: CircleAvatar(
-                                      radius: 100,
-                                      backgroundImage: NetworkImage(
-                                          postList[index].image.toString()),
-                                    ),
-                                  ),
-                                ),
+                                Container(
+                                  height: 200,
+                                  width: 170,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/image3.png'),
+                                          fit: BoxFit.cover)),
+                                )
                               ],
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       )
                     ],
-                  ),
-                );
-              }
-            },
+                  ))
+            ],
           )
         ],
       ),
