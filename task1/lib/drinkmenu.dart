@@ -16,25 +16,32 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
   String currentSelectedCat = "All";
   final TextEditingController searchController = TextEditingController();
   List<PostsModel> Dmenu = [];
-  List<String> Categories = ["All", "Hot Beverages"];
+  List<String> Categories = [
+    "All",
+    "Hot Beverages",
+    "ICED BEVERAGES",
+    "ADD-INS",
+    "SYRUPS",
+    "FOOD"
+  ];
 
   Future<List<PostsModel>> getPostApi() async {
     final response;
     if (Categories[_selectedChipIndex] == "All") {
       response = await http.get(Uri.parse(
-          'https://unicode-flutter-lp-new.onrender.com/get_all_products'));
+          'https://unicode-flutter-lp-new-final.onrender.com/get_all_products'));
     } else {
       response = await http.get(Uri.parse(
-          'https://unicode-flutter-lp-new.onrender.com/get_all_products')); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
+          'https://unicode-flutter-lp-new-final.onrender.com/get_products_by_category?category=' +
+              Categories[
+                  _selectedChipIndex])); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
     }
 
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       print(data);
-      for (var i in data) {
-        Dmenu.add(PostsModel.fromJson(i));
-      }
-      print(Dmenu[1].category);
+      Dmenu = data.map<PostsModel>((i) => PostsModel.fromJson(i)).toList();
+      //print(Dmenu[1].category);
       setState(() {});
       return Dmenu;
     } else {
@@ -120,7 +127,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                         ),
                                         ChoiceChip(
                                           backgroundColor: Color(0xFF834D1E),
-                                          label: Text('Beverages',
+                                          label: Text('Hot Beverages',
                                               style: TextStyle(
                                                   color: Colors.white)),
                                           selected: _selectedChipIndex == 1,
@@ -133,7 +140,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                         ),
                                         ChoiceChip(
                                           backgroundColor: Color(0xFF834D1E),
-                                          label: Text('Add-Ins',
+                                          label: Text('Iced Beverages',
                                               style: TextStyle(
                                                   color: Colors.white)),
                                           selected: _selectedChipIndex == 2,
@@ -147,7 +154,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                         ChoiceChip(
                                           backgroundColor: Color(0xFF834D1E),
                                           label: Text(
-                                            'Food',
+                                            'Add-Ins',
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
