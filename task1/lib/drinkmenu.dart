@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:provider/provider.dart';
 import 'package:task1/Models/posts_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:task1/provider/cart_provider.dart';
+
+List<PostsModel> Dmenu = [];
 
 class Mydrinkmenu extends StatefulWidget {
   const Mydrinkmenu({super.key});
@@ -15,7 +18,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
   int _selectedChipIndex = 0;
   String currentSelectedCat = "All";
   final TextEditingController searchController = TextEditingController();
-  List<PostsModel> Dmenu = [];
+
   List<String> Categories = [
     "All",
     "Hot Beverages",
@@ -25,6 +28,14 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
     "FOOD"
   ];
 
+  Future<List<PostsModel>>? _cachedFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _cachedFuture = getPostApi();
+  }
+
   Future<List<PostsModel>> getPostApi() async {
     final response;
     if (Categories[_selectedChipIndex] == "All") {
@@ -32,17 +43,15 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
           'https://unicode-flutter-lp-new-final.onrender.com/get_all_products'));
     } else {
       response = await http.get(Uri.parse(
-          'https://unicode-flutter-lp-new-final.onrender.com/get_products_by_category?category=' +
-              Categories[
-                  _selectedChipIndex])); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
+          'https://unicode-flutter-lp-new-final.onrender.com/get_products_by_category?category=' +Categories[_selectedChipIndex])); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
     }
 
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       print(data);
       Dmenu = data.map<PostsModel>((i) => PostsModel.fromJson(i)).toList();
-      //print(Dmenu[1].category);
-      setState(() {});
+      print(Dmenu[1].category);
+
       return Dmenu;
     } else {
       return Dmenu;
@@ -51,12 +60,14 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context,listen:false);
+    print('Rebuilding again ');
     return SafeArea(
         child: Scaffold(
       body: Column(
         children: [
           FutureBuilder(
-              future: getPostApi(),
+              future: _cachedFuture,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Text('loaing...');
@@ -108,7 +119,8 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                   SizedBox(
                                     height: 15,
                                   ),
-                                  Center(
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
                                     child: Wrap(
                                       spacing: 8.0,
                                       children: [
@@ -166,6 +178,32 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             });
                                           },
                                         ),
+                                        ChoiceChip(
+                                          backgroundColor: Color(0xFF834D1E),
+                                          label: Text('SYRUPS',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          selected: _selectedChipIndex == 4,
+                                          onSelected: (bool selected) {
+                                            setState(() {
+                                              _selectedChipIndex =
+                                                  (selected ? 4 : null)!;
+                                            });
+                                          },
+                                        ),
+                                        ChoiceChip(
+                                          backgroundColor: Color(0xFF834D1E),
+                                          label: Text('FOOD',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          selected: _selectedChipIndex == 5,
+                                          onSelected: (bool selected) {
+                                            setState(() {
+                                              _selectedChipIndex =
+                                                  (selected ? 5 : null)!;
+                                            });
+                                          },
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -173,7 +211,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                   SizedBox(
                                     height: 15,
                                   ),
-
+                                        
                                   Container(
                                     decoration: BoxDecoration(
                                         border: Border.all(
@@ -184,96 +222,105 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             topRight: Radius.circular(60))),
                                     width: double.infinity,
                                     height: 536,
-                                    child: ListView.builder(
-                                      itemCount: Dmenu.length,
-                                      itemBuilder: (context, index) {
-                                        return Column(
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 15,
-                                                          left: 15,
-                                                          bottom: 8,
-                                                          right: 8),
-                                                  child: Container(
-                                                    height: 150,
-                                                    width: 110,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          //image
-                                                          image: NetworkImage(
-                                                              Dmenu[index]
-                                                                  .image
-                                                                  .toString()),
-                                                          fit: BoxFit.cover),
-                                                      //color: Color(0xFFFCF2D9),
-
-                                                      color: Colors.black,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
+                                    child: Consumer<Cart>(builder: (context, value, child) =>
+                                      ListView.builder(
+                                        itemCount: Dmenu.length,
+                                        itemBuilder: (context, index) {
+                                          return Column(
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 15,
+                                                            left: 15,
+                                                            bottom: 8,
+                                                            right: 8),
+                                                    child: Container(
+                                                      height: 150,
+                                                      width: 110,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            //image
+                                                            image: NetworkImage(
+                                                                Dmenu[index]
+                                                                    .image
+                                                                    .toString()),
+                                                            fit: BoxFit.cover),
+                                                        //color: Color(0xFFFCF2D9),
+                                      
+                                                        color: Colors.black,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                20),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 15),
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: Text(
-                                                                Dmenu[index]
-                                                                        .name
-                                                                        .toString() ??
-                                                                    'no data',
-                                                                maxLines: 3,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        19,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Color(
-                                                                        0xFF834D1E)),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(top: 15),
+                                                          child: Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text(
+                                                                  Dmenu[index]
+                                                                          .name
+                                                                          .toString() ??
+                                                                      'no data',
+                                                                  maxLines: 3,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          19,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Color(
+                                                                          0xFF834D1E)),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child:
-                                                                Text('200RS'),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      )
-                                                    ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                       
+                                                        Row(
+                                                          children: [
+                                                            ElevatedButton(
+                                                                onPressed: () {
+                                                                  cart.addItem(
+                                                                    Dmenu[index]
+                                                                        .toString(),
+                                                                    //Dmenu[index].name.toString(),
+                                                                  );
+                                                                },
+                                                                child: Text(
+                                                                    'Add to Cart'))
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        );
-                                      },
+                                                ],
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      ),
                                     ),
                                   )
                                 ],

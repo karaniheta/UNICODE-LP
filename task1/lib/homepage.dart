@@ -20,25 +20,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<PostsModel> postList = [];
 
-  Future<List<PostsModel>> getPostApi() async {
-    final response = await http.get(
-        Uri.parse('https://unicode-flutter-lp.onrender.com/get_all_products'));
-    var data = jsonDecode(response.body.toString());
-    if (response.statusCode == 200) {
-      //print(data);
-      for (var i in data) {
-        postList.add(PostsModel.fromJson(i));
-        print("object");
-      }
-      print(postList[1].category);
-      setState(() {});
-      return postList;
-    } else {
-      print('ahmvhgdcfhgjgmnb');
-      return postList;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

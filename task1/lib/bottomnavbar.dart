@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task1/drinkmenu.dart';
 import 'package:task1/favorite.dart';
 import 'package:task1/homepage.dart';
-import 'package:task1/order.dart';
+import 'package:task1/cart.dart';
 
 class Bottomnavbar extends StatefulWidget {
   const Bottomnavbar({super.key});
@@ -16,7 +16,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
   List<Widget> widgetList = [
     MyHomePage(),
     Mydrinkmenu(),
-    Myorder(),
+    MyCartPage(),
     MyFavorite()
     // Text('Drink Menu', style: TextStyle(fontSize: 30)),
     //Text('Your Order', style: TextStyle(fontSize: 30)),
@@ -54,8 +54,8 @@ class _BottomnavbarState extends State<Bottomnavbar> {
               //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_long, color: Colors.white),
-              label: 'Your Order',
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
+              label: 'Cart',
               //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
             BottomNavigationBarItem(
