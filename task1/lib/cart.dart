@@ -7,8 +7,7 @@ import 'package:task1/Models/posts_model.dart';
 class MyCartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<
-        Cart>(); //This allows real-time updates to the UI when the cart's state changes
+    final cart = context.watch<Cart>(); //This allows real-time updates to the UI when the cart's state changes
 
     return Scaffold(
       appBar: AppBar(

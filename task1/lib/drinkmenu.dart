@@ -43,7 +43,9 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
           'https://unicode-flutter-lp-new-final.onrender.com/get_all_products'));
     } else {
       response = await http.get(Uri.parse(
-          'https://unicode-flutter-lp-new-final.onrender.com/get_products_by_category?category=' +Categories[_selectedChipIndex])); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
+          'https://unicode-flutter-lp-new-final.onrender.com/get_products_by_category?category=' +
+              Categories[
+                  _selectedChipIndex])); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
     }
 
     var data = jsonDecode(response.body.toString());
@@ -60,7 +62,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context,listen:false);
+    final cart = Provider.of<Cart>(context, listen: false);
     print('Rebuilding again ');
     return SafeArea(
         child: Scaffold(
@@ -211,7 +213,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                   SizedBox(
                                     height: 15,
                                   ),
-                                        
+
                                   Container(
                                     decoration: BoxDecoration(
                                         border: Border.all(
@@ -222,8 +224,9 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             topRight: Radius.circular(60))),
                                     width: double.infinity,
                                     height: 536,
-                                    child: Consumer<Cart>(builder: (context, value, child) =>
-                                      ListView.builder(
+                                    child: Consumer<Cart>(
+                                      builder: (context, value, child) =>
+                                          ListView.builder(
                                         itemCount: Dmenu.length,
                                         itemBuilder: (context, index) {
                                           return Column(
@@ -251,11 +254,11 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                                                     .toString()),
                                                             fit: BoxFit.cover),
                                                         //color: Color(0xFFFCF2D9),
-                                      
+
                                                         color: Colors.black,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                20),
+                                                            BorderRadius
+                                                                .circular(20),
                                                       ),
                                                     ),
                                                   ),
@@ -268,7 +271,8 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(top: 15),
+                                                                  .only(
+                                                                  top: 15),
                                                           child: Row(
                                                             children: [
                                                               Expanded(
@@ -297,14 +301,13 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                                         SizedBox(
                                                           height: 10,
                                                         ),
-                                                       
                                                         Row(
                                                           children: [
                                                             ElevatedButton(
                                                                 onPressed: () {
                                                                   cart.addItem(
-                                                                    Dmenu[index]
-                                                                        .toString(),
+                                                                    Dmenu[
+                                                                        index],
                                                                     //Dmenu[index].name.toString(),
                                                                   );
                                                                 },
