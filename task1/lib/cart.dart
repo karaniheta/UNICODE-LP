@@ -7,7 +7,8 @@ import 'package:task1/Models/posts_model.dart';
 class MyCartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<Cart>(); //This allows real-time updates to the UI when the cart's state changes
+    final cart = context.watch<
+        Cart>(); //This allows real-time updates to the UI when the cart's state changes
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +35,7 @@ class MyCartPage extends StatelessWidget {
                   leading: Image.network(Dmenu[index].image.toString(),
                       height: 100, width: 60),
                   title: Text(
-                    Dmenu[index].name.toString(),
+                    cart.items[index].name.toString(),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   trailing: IconButton(

@@ -9,7 +9,7 @@ List<PostsModel> Dmenu = [];
 
 class Mydrinkmenu extends StatefulWidget {
   const Mydrinkmenu({super.key});
-
+  
   @override
   State<Mydrinkmenu> createState() => _MydrinkmenuState();
 }
@@ -43,9 +43,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
           'https://unicode-flutter-lp-new-final.onrender.com/get_all_products'));
     } else {
       response = await http.get(Uri.parse(
-          'https://unicode-flutter-lp-new-final.onrender.com/get_products_by_category?category=' +
-              Categories[
-                  _selectedChipIndex])); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
+          'https://unicode-flutter-lp-new-final.onrender.com/get_products_by_category?category=' +Categories[_selectedChipIndex])); //updated api url with category vagriable and categoty as Categories[_selectedChipIndex]
     }
 
     var data = jsonDecode(response.body.toString());
@@ -213,7 +211,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                   SizedBox(
                                     height: 15,
                                   ),
-
+                                  
                                   Container(
                                     decoration: BoxDecoration(
                                         border: Border.all(
@@ -306,8 +304,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                                             ElevatedButton(
                                                                 onPressed: () {
                                                                   cart.addItem(
-                                                                    Dmenu[
-                                                                        index],
+                                                                    Dmenu[index],
                                                                     //Dmenu[index].name.toString(),
                                                                   );
                                                                 },
