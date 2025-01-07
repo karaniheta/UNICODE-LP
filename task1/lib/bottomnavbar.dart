@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task1/drinkmenu.dart';
-import 'package:task1/favorite.dart';
+import 'package:task1/profile.dart';
 import 'package:task1/homepage.dart';
 import 'package:task1/cart.dart';
 
@@ -17,7 +17,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
     MyHomePage(),
     Mydrinkmenu(),
     MyCartPage(),
-    MyFavorite()
+    MyProfile()
     // Text('Drink Menu', style: TextStyle(fontSize: 30)),
     //Text('Your Order', style: TextStyle(fontSize: 30)),
     //Text('Favorite', style: TextStyle(fontSize: 30)),
@@ -25,10 +25,8 @@ class _BottomnavbarState extends State<Bottomnavbar> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:Scaffold(
-         
-        
-         bottomNavigationBar: BottomNavigationBar(
+        child: Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: true,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
@@ -59,15 +57,14 @@ class _BottomnavbarState extends State<Bottomnavbar> {
               //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite, color: Colors.white),
-              label: 'Favorites',
+              icon: Icon(Icons.person, color: Colors.white),
+              label: 'Profile',
               //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
           ]),
-          body: Center(
-            child: widgetList[myIndex],
-          ),
-      ) 
-    );
+      body: Center(
+        child: widgetList[myIndex],
+      ),
+    ));
   }
 }

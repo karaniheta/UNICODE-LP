@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:task1/authservice.dart';
+import 'package:task1/bottomnavbar.dart';
 import 'package:task1/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MySignUp extends StatefulWidget {
   const MySignUp({super.key});
@@ -134,7 +137,7 @@ class _MySignUpState extends State<MySignUp> {
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MyLoginPage()));
+                              builder: (context) => Bottomnavbar()));
                         },
                         child: Text(
                           "Alreay have an account? SignIn",
@@ -158,8 +161,16 @@ class _MySignUpState extends State<MySignUp> {
     if (user != null) {
       print("User Created Succesfully");
 
+      CollectionReference collRef =
+          FirebaseFirestore.instance.collection('Cafe');
+      collRef.add({
+        'name': _name.text,
+        'email': _email.text,
+        // Replace this with your actual mobile controller or input
+      });
+
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => MyLoginPage()));
+          .push(MaterialPageRoute(builder: (context) => Bottomnavbar()));
     }
   }
 }

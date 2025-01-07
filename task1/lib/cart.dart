@@ -32,7 +32,7 @@ class MyCartPage extends StatelessWidget {
                     side: BorderSide(color: Colors.black),
                   ),
                   contentPadding: EdgeInsets.all(10),
-                  leading: Image.network(Dmenu[index].image.toString(),
+                  leading: Image.network(cart.items[index].image.toString(),
                       height: 100, width: 60),
                   title: Text(
                     cart.items[index].name.toString(),

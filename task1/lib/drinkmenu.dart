@@ -134,6 +134,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             setState(() {
                                               _selectedChipIndex =
                                                   (selected ? 0 : null)!;
+                                                  _cachedFuture = getPostApi();
                                             });
                                           },
                                         ),
@@ -147,6 +148,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             setState(() {
                                               _selectedChipIndex =
                                                   (selected ? 1 : null)!;
+                                                  _cachedFuture = getPostApi();
                                             });
                                           },
                                         ),
@@ -160,6 +162,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             setState(() {
                                               _selectedChipIndex =
                                                   (selected ? 2 : null)!;
+                                                  _cachedFuture = getPostApi();
                                             });
                                           },
                                         ),
@@ -175,6 +178,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             setState(() {
                                               _selectedChipIndex =
                                                   (selected ? 3 : null)!;
+                                                  _cachedFuture = getPostApi();
                                             });
                                           },
                                         ),
@@ -188,6 +192,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             setState(() {
                                               _selectedChipIndex =
                                                   (selected ? 4 : null)!;
+                                                  _cachedFuture = getPostApi();
                                             });
                                           },
                                         ),
@@ -201,6 +206,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                             setState(() {
                                               _selectedChipIndex =
                                                   (selected ? 5 : null)!;
+                                                  _cachedFuture = getPostApi();
                                             });
                                           },
                                         ),
