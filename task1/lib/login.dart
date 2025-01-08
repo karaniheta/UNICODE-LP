@@ -85,6 +85,7 @@ class _MyLoginState extends State<MyLoginPage> {
                   child: Column(
                     children: [
                       TextField(
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                             hintText: 'Email',
                             hintStyle: TextStyle(color: Colors.white),
@@ -99,6 +100,7 @@ class _MyLoginState extends State<MyLoginPage> {
                         height: 10,
                       ),
                       TextField(
+                          style: TextStyle(color: Colors.white),
                           obscureText: true,
                           decoration: InputDecoration(
                               hintText: 'Password',

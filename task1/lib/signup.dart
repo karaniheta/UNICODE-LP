@@ -85,6 +85,7 @@ class _MySignUpState extends State<MySignUp> {
                   child: Column(
                     children: [
                       TextField(
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               hintText: 'Name',
                               hintStyle: TextStyle(color: Colors.white),
@@ -98,6 +99,7 @@ class _MySignUpState extends State<MySignUp> {
                         height: 15,
                       ),
                       TextField(
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                             hintText: 'Email',
                             hintStyle: TextStyle(color: Colors.white),
@@ -112,6 +114,7 @@ class _MySignUpState extends State<MySignUp> {
                         height: 10,
                       ),
                       TextField(
+                          style: TextStyle(color: Colors.white),
                           obscureText: true,
                           decoration: InputDecoration(
                               hintText: 'Password',
@@ -161,13 +164,13 @@ class _MySignUpState extends State<MySignUp> {
     if (user != null) {
       print("User Created Succesfully");
 
-      CollectionReference collRef =
-          FirebaseFirestore.instance.collection('Cafe');
-      collRef.add({
+      await FirebaseFirestore.instance.collection('Cafe').doc(user.uid).set({
         'name': _name.text,
         'email': _email.text,
-        // Replace this with your actual mobile controller or input
+        'createdAt': FieldValue.serverTimestamp(),
       });
+
+      // Replace this with your actual mobile controller or input
 
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => Bottomnavbar()));

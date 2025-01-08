@@ -38,7 +38,7 @@ class MyProfile extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("Cafe")
-            .doc(user.uid) // Query the document with the user's UID
+            .doc(uid) // Query the document with the user's UID
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
