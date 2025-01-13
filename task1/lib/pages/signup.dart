@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
-
-import 'package:task1/SplashScreen.dart';
 import 'package:task1/authservice.dart';
 import 'package:task1/bottomnavbar.dart';
-import 'package:task1/homepage.dart';
-import 'package:task1/signup.dart';
+import 'package:task1/pages/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class MyLoginPage extends StatefulWidget {
-  const MyLoginPage({super.key});
+class MySignUp extends StatefulWidget {
+  const MySignUp({super.key});
+
   @override
-  State<MyLoginPage> createState() => _MyLoginState();
+  State<MySignUp> createState() => _MySignUpState();
 }
 
-class _MyLoginState extends State<MyLoginPage> {
+class _MySignUpState extends State<MySignUp> {
   final _auth = AuthService();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _name = TextEditingController();
   @override
   void dispose() {
     super.dispose();
     _email.dispose();
     _password.dispose();
+    _name.dispose();
   }
 
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
@@ -40,7 +40,7 @@ class _MyLoginState extends State<MyLoginPage> {
         child: Center(
           child: Container(
             width: 350,
-            height: 300,
+            height: 375,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white, width: 1.5),
               borderRadius: BorderRadius.circular(10),
@@ -62,7 +62,7 @@ class _MyLoginState extends State<MyLoginPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
-                            "Sign In",
+                            "Sign Up",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
@@ -84,6 +84,20 @@ class _MyLoginState extends State<MyLoginPage> {
                       left: 25),
                   child: Column(
                     children: [
+                      TextField(
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                              hintText: 'Name',
+                              hintStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white,
+                                      style: BorderStyle.solid,
+                                      width: 10))),
+                          controller: _name),
+                      SizedBox(
+                        height: 15,
+                      ),
                       TextField(
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -115,8 +129,8 @@ class _MyLoginState extends State<MyLoginPage> {
                         height: 15,
                       ),
                       ElevatedButton(
-                        onPressed: _signin,
-                        child: Text("SignIn"),
+                        onPressed: _signup,
+                        child: Text("SignUp"),
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
                               horizontal: 32, vertical: 10),
@@ -126,10 +140,10 @@ class _MyLoginState extends State<MyLoginPage> {
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MySignUp()));
+                              builder: (context) => Bottomnavbar()));
                         },
                         child: Text(
-                          "Don't have an account? SignUp",
+                          "Alreay have an account? SignIn",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -144,11 +158,19 @@ class _MyLoginState extends State<MyLoginPage> {
     ));
   }
 
-  void _signin() async {
+  void _signup() async {
     final user =
-        await _auth.loginUserWithEmailAndPassword(_email.text, _password.text);
+        await _auth.createUserWithEmailAndPassword(_email.text, _password.text);
     if (user != null) {
       print("User Created Succesfully");
+
+      await FirebaseFirestore.instance.collection('Cafe').doc(user.uid).set({
+        'name': _name.text,
+        'email': _email.text,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // Replace this with your actual mobile controller or input
 
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => Bottomnavbar()));
