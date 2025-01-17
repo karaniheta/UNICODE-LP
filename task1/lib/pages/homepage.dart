@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:task1/Models/posts_model.dart';
 import 'package:task1/bottomnavbar.dart';
@@ -122,24 +124,54 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Color(0xFF834D1E),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 220),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/image1.png'),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Iced Coffee \nSweet Heaven ",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "Explore our handpicked \nrecommendations for you ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Container(
+                                  width: 120,
+                                  height: 145,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    image: DecorationImage(
+                                        image: AssetImage('assets/image1.png'),
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                        width: 350,
-                      ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 130),
+                        padding: const EdgeInsets.only(right: 130, top: 15),
                         child: Text("This week's recommendations"),
                       ),
                       Padding(
@@ -195,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                      image: AssetImage('assets/image3.png'),
+                                      image: AssetImage('assets/Rectangle.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),

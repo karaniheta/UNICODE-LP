@@ -40,7 +40,9 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8E3B6),
       appBar: AppBar(
+        backgroundColor: Color(0xFFF8E3B6),
         title: Text('Past Orders'),
       ),
       body: isLoading
@@ -62,6 +64,11 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
                     return Card(
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       child: ListTile(
+                        tileColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: Color(0xFF834D1E), width: 2),
+                        ),
                         title: Text(
                           'Order #${index + 1}',
                           style: TextStyle(
@@ -76,7 +83,6 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
                               style:
                                   TextStyle(fontSize: 12, color: Colors.grey),
                             ),
-                            
                           ],
                         ),
                       ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:task1/Models/posts_model.dart';
@@ -18,6 +19,7 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
   int _selectedChipIndex = 0;
   String currentSelectedCat = "All";
   final TextEditingController searchController = TextEditingController();
+  Timer? _debounce;
 
   List<String> Categories = [
     "All",
@@ -33,7 +35,26 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
   @override
   void initState() {
     super.initState();
+    searchController.addListener(_onSearchChanged);
     _cachedFuture = getPostApi();
+  }
+
+  void dispose() {
+    searchController.removeListener(_onSearchChanged);
+    searchController.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (searchController.text.isNotEmpty) {
+        _fetchSearchResults(searchController.text);
+      } else {
+        _cachedFuture = getPostApi();
+      }
+    });
   }
 
   Future<List<PostsModel>> getPostApi() async {
@@ -57,6 +78,24 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
       return Dmenu;
     } else {
       return Dmenu;
+    }
+  }
+
+  Future<void> _fetchSearchResults(String query) async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://unicode-flutter-lp-new-final.onrender.com/search_products?q=$query'));
+
+      var data = jsonDecode(response.body.toString());
+      if (response.statusCode == 200) {
+        setState(() {
+          Dmenu = data.map<PostsModel>((i) => PostsModel.fromJson(i)).toList();
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 
@@ -103,12 +142,15 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                       top: 20, right: 20, left: 20),
                                   child: SearchBar(
                                     controller: searchController,
+                                    onChanged: (value) => _onSearchChanged(),
                                     leading: IconButton(
                                         onPressed: () {},
                                         icon: const Icon(Icons.search)),
                                     trailing: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _onSearchChanged();
+                                        },
                                         icon: const Icon(Icons.mic),
                                       )
                                     ],
@@ -126,87 +168,212 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                     spacing: 8.0,
                                     children: [
                                       ChoiceChip(
-                                        backgroundColor: Color(0xFF834D1E),
-                                        label: Text('All',
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        backgroundColor: Color(
+                                            0xFFF8E3B6), // Transparent background when not selected
+                                        selectedColor: Color(
+                                            0xFF834D1E), // Brown background when selected
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8), // Optional: Adjust border radius
+                                          side: BorderSide(
+                                            color: Color(
+                                                0xFF834D1E), // Brown border
+                                            width: 2, // Border thickness
+                                          ),
+                                        ),
+                                        label: Text(
+                                          'All',
+                                          style: TextStyle(
+                                            color: _selectedChipIndex == 0
+                                                ? Colors
+                                                    .white // White text when selected
+                                                : Color(
+                                                    0xFF834D1E), // Brown text when not selected
+                                          ),
+                                        ),
                                         selected: _selectedChipIndex == 0,
                                         onSelected: (bool selected) {
                                           setState(() {
-                                            _selectedChipIndex =
-                                                (selected ? 0 : null)!;
-                                            _cachedFuture = getPostApi();
+                                            _selectedChipIndex = (selected
+                                                ? 0
+                                                : null)!; // Update selected chip index
+                                            _cachedFuture =
+                                                getPostApi(); // Call your function here
                                           });
                                         },
                                       ),
                                       ChoiceChip(
-                                        backgroundColor: Color(0xFF834D1E),
-                                        label: Text('Hot Beverages',
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        backgroundColor: Color(
+                                            0xFFF8E3B6), // Transparent background when not selected
+                                        selectedColor: Color(
+                                            0xFF834D1E), // Brown background when selected
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8), // Optional: Adjust border radius
+                                          side: BorderSide(
+                                            color: Color(
+                                                0xFF834D1E), // Brown border
+                                            width: 2, // Border thickness
+                                          ),
+                                        ),
+                                        label: Text(
+                                          'Hot Beverages',
+                                          style: TextStyle(
+                                            color: _selectedChipIndex == 1
+                                                ? Colors
+                                                    .white // White text when selected
+                                                : Color(
+                                                    0xFF834D1E), // Brown text when not selected
+                                          ),
+                                        ),
                                         selected: _selectedChipIndex == 1,
                                         onSelected: (bool selected) {
                                           setState(() {
-                                            _selectedChipIndex =
-                                                (selected ? 1 : null)!;
-                                            _cachedFuture = getPostApi();
+                                            _selectedChipIndex = (selected
+                                                ? 1
+                                                : null)!; // Update selected chip index
+                                            _cachedFuture =
+                                                getPostApi(); // Call your function here
                                           });
                                         },
                                       ),
                                       ChoiceChip(
-                                        backgroundColor: Color(0xFF834D1E),
-                                        label: Text('Iced Beverages',
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        backgroundColor: Color(
+                                            0xFFF8E3B6), // Transparent background when not selected
+                                        selectedColor: Color(
+                                            0xFF834D1E), // Brown background when selected
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8), // Optional: Adjust border radius
+                                          side: BorderSide(
+                                            color: Color(
+                                                0xFF834D1E), // Brown border
+                                            width: 2, // Border thickness
+                                          ),
+                                        ),
+                                        label: Text(
+                                          'Cold Beverages',
+                                          style: TextStyle(
+                                            color: _selectedChipIndex == 2
+                                                ? Colors
+                                                    .white // White text when selected
+                                                : Color(
+                                                    0xFF834D1E), // Brown text when not selected
+                                          ),
+                                        ),
                                         selected: _selectedChipIndex == 2,
                                         onSelected: (bool selected) {
                                           setState(() {
-                                            _selectedChipIndex =
-                                                (selected ? 2 : null)!;
-                                            _cachedFuture = getPostApi();
+                                            _selectedChipIndex = (selected
+                                                ? 2
+                                                : null)!; // Update selected chip index
+                                            _cachedFuture =
+                                                getPostApi(); // Call your function here
                                           });
                                         },
                                       ),
                                       ChoiceChip(
-                                        backgroundColor: Color(0xFF834D1E),
+                                        backgroundColor: Color(
+                                            0xFFF8E3B6), // Transparent background when not selected
+                                        selectedColor: Color(
+                                            0xFF834D1E), // Brown background when selected
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8), // Optional: Adjust border radius
+                                          side: BorderSide(
+                                            color: Color(
+                                                0xFF834D1E), // Brown border
+                                            width: 2, // Border thickness
+                                          ),
+                                        ),
                                         label: Text(
                                           'Add-Ins',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: _selectedChipIndex == 3
+                                                ? Colors
+                                                    .white // White text when selected
+                                                : Color(
+                                                    0xFF834D1E), // Brown text when not selected
+                                          ),
                                         ),
                                         selected: _selectedChipIndex == 3,
                                         onSelected: (bool selected) {
                                           setState(() {
-                                            _selectedChipIndex =
-                                                (selected ? 3 : null)!;
-                                            _cachedFuture = getPostApi();
+                                            _selectedChipIndex = (selected
+                                                ? 3
+                                                : null)!; // Update selected chip index
+                                            _cachedFuture =
+                                                getPostApi(); // Call your function here
                                           });
                                         },
                                       ),
                                       ChoiceChip(
-                                        backgroundColor: Color(0xFF834D1E),
-                                        label: Text('SYRUPS',
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        backgroundColor: Color(
+                                            0xFFF8E3B6), // Transparent background when not selected
+                                        selectedColor: Color(
+                                            0xFF834D1E), // Brown background when selected
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8), // Optional: Adjust border radius
+                                          side: BorderSide(
+                                            color: Color(
+                                                0xFF834D1E), // Brown border
+                                            width: 2, // Border thickness
+                                          ),
+                                        ),
+                                        label: Text(
+                                          'Syrups',
+                                          style: TextStyle(
+                                            color: _selectedChipIndex == 4
+                                                ? Colors
+                                                    .white // White text when selected
+                                                : Color(
+                                                    0xFF834D1E), // Brown text when not selected
+                                          ),
+                                        ),
                                         selected: _selectedChipIndex == 4,
                                         onSelected: (bool selected) {
                                           setState(() {
-                                            _selectedChipIndex =
-                                                (selected ? 4 : null)!;
-                                            _cachedFuture = getPostApi();
+                                            _selectedChipIndex = (selected
+                                                ? 4
+                                                : null)!; // Update selected chip index
+                                            _cachedFuture =
+                                                getPostApi(); // Call your function here
                                           });
                                         },
                                       ),
                                       ChoiceChip(
-                                        backgroundColor: Color(0xFF834D1E),
-                                        label: Text('FOOD',
-                                            style:
-                                                TextStyle(color: Colors.white)),
+                                        backgroundColor: Color(
+                                            0xFFF8E3B6), // Transparent background when not selected
+                                        selectedColor: Color(
+                                            0xFF834D1E), // Brown background when selected
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8), // Optional: Adjust border radius
+                                          side: BorderSide(
+                                            color: Color(
+                                                0xFF834D1E), // Brown border
+                                            width: 2, // Border thickness
+                                          ),
+                                        ),
+                                        label: Text(
+                                          'Food',
+                                          style: TextStyle(
+                                            color: _selectedChipIndex == 5
+                                                ? Colors
+                                                    .white // White text when selected
+                                                : Color(
+                                                    0xFF834D1E), // Brown text when not selected
+                                          ),
+                                        ),
                                         selected: _selectedChipIndex == 5,
                                         onSelected: (bool selected) {
                                           setState(() {
-                                            _selectedChipIndex =
-                                                (selected ? 5 : null)!;
-                                            _cachedFuture = getPostApi();
+                                            _selectedChipIndex = (selected
+                                                ? 5
+                                                : null)!; // Update selected chip index
+                                            _cachedFuture =
+                                                getPostApi(); // Call your function here
                                           });
                                         },
                                       ),
@@ -303,14 +470,48 @@ class _MydrinkmenuState extends State<Mydrinkmenu> {
                                                       ),
                                                       Row(
                                                         children: [
+                                                          Text(
+                                                            "Rs.100",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xFF834D1E),
+                                                                fontSize: 15),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Row(
+                                                        children: [
                                                           ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                backgroundColor:
+                                                                    Color(
+                                                                        0xFF834D1E),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8), // Set button border radius
+                                                                ),
+                                                              ),
                                                               onPressed: () {
                                                                 cart.addItem(
                                                                   Dmenu[index],
                                                                 );
                                                               },
                                                               child: Text(
-                                                                  'Add to Cart'))
+                                                                'Add to Cart',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        14),
+                                                              ))
                                                         ],
                                                       )
                                                     ],
