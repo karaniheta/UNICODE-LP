@@ -12,95 +12,59 @@ class Bottomnavbar extends StatefulWidget {
 }
 
 class _BottomnavbarState extends State<Bottomnavbar> {
-  int currentTab = 0;
-
-  final Map<int, GlobalKey<NavigatorState>> navigatorKeys = {
-    0: GlobalKey<NavigatorState>(),
-    1: GlobalKey<NavigatorState>(),
-    2: GlobalKey<NavigatorState>(),
-    3: GlobalKey<NavigatorState>(),
-  };
-
-  final List<Widget> pages = [
-     MyHomePage(),
-     Mydrinkmenu(),
-     MyCartPage(),
-     MyProfile(),
+  int myIndex = 0;
+  List<Widget> widgetList = [
+    MyHomePage(),
+    Mydrinkmenu(),
+    MyCartPage(),
+    MyProfile()
+    // Text('Drink Menu', style: TextStyle(fontSize: 30)),
+    //Text('Your Order', style: TextStyle(fontSize: 30)),
+    //Text('Favorite', style: TextStyle(fontSize: 30)),
   ];
-
-  void _selectTab(int index) {
-    if (index == currentTab) {
-      // Pop to the first route if already on the current tab
-      navigatorKeys[index]?.currentState?.popUntil((route) => route.isFirst);
-    } else {
-      setState(() {
-        currentTab = index;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: List.generate(pages.length, (index) {
-            return Offstage(
-              offstage: currentTab != index,
-              child: TabNavigator(
-                navigatorKey: navigatorKeys[index]!,
-                child: pages[index],
-              ),
-            );
-          }),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentTab,
-          onTap: _selectTab,
+        child: Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: true,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
           iconSize: 30,
-          backgroundColor: const Color(0xFF834D1E),
+          backgroundColor: Color(0xFF834D1E),
           type: BottomNavigationBarType.fixed,
+          onTap: (index) {
+            setState(() {
+              myIndex = index;
+            });
+          },
+          currentIndex: myIndex,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home, color: Colors.white),
               label: 'Home',
+
+              //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_cafe, color: Colors.white),
               label: 'Drink Menu',
+              //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart, color: Colors.white),
               label: 'Cart',
+              //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person, color: Colors.white),
               label: 'Profile',
+              //backgroundColor: Color.fromARGB(255, 255, 255, 255)
             ),
-          ],
-        ),
+          ]),
+      body: Center(
+        child: widgetList[myIndex],
       ),
-    );
-  }
-}
-
-class TabNavigator extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
-  final Widget child;
-
-  const TabNavigator(
-      {required this.navigatorKey, required this.child, Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      onGenerateRoute: (settings) => MaterialPageRoute(
-        builder: (context) => child,
-      ),
-    );
+    ));
   }
 }

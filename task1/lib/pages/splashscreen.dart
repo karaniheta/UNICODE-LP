@@ -16,7 +16,7 @@ class _SplashscreenState extends State<Splashscreen> {
   }
 
   _navigatetohome() async {
-    await Future.delayed(Duration(milliseconds: 1500), () {});
+    await Future.delayed(Duration(milliseconds: 2000), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => MyLoginPage()));
   }
@@ -24,13 +24,16 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: 900,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/SplashScreen.png'),
-            fit: BoxFit.fill,
+      backgroundColor: Color(0xFF7C5028),
+      body: Center(
+        child: Container(
+          width: 350,
+          height: 400,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/Caffinity.png'),
+              fit: BoxFit.fill,
+            ),
           ),
         ),
       ),
